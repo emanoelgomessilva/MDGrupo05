@@ -1,2 +1,2 @@
-# MDGrupo05
-Repositório destinado ao código fonte do grupo 05 da cadeira Modelagem de dados do curso de Bacharelado em Sistemas de Informação no período de 2022.2
+# PISI3_Grupo06
+Repositório para hospedagem do código fonte do projeto. Nele, foram usados algoritmos de aprendizado de máquina para agrupamento e classificação de dados relacionados à doenças cardiovasculares no mundo.
