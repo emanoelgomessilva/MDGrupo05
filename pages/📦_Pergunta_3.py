@@ -1,9 +1,7 @@
-
 import streamlit as st
-import mysql.connector as cnt
-import matplotlib.pyplot as plt
 import pandas as pd
 import main
+import altair as alt
 
 conexao = main.conexao
 
@@ -13,24 +11,21 @@ st.write('''Qual órgão superior teve maior uso das verbas nos últimos 10 anos
 def builder_body():
     Pergunta_3()
 
-
 def Pergunta_3():
 
     consulta_sql = "SELECT dos.NOME_ORGAO_SUPERIOR, SUM(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_superior as dos inner join fatoconvenios as fc inner join dimdata as dt where dos.sk_orgao_superior = fc.k_Orgao_Superior and dt.keyData = fc.k_Data and dt.ano_id > 2013 GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC LIMIT 5"
     dados = pd.read_sql_query(consulta_sql, conexao)
 
-    fig, ax = plt.subplots()
-    bars = ax.bar(dados['NOME_ORGAO_SUPERIOR'], dados['valor_convenio'])
-    ax.set_xlabel('Órgão superior')
-    ax.set_ylabel('Valores em convênios')
-    ax.set_title('Gráfico de Barras')
-
-    for bar in bars:
-        yval = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 2), ha='center', va='bottom')
-
-    st.write('''Gráfico da quantidade de convênios por estado''', unsafe_allow_html=True)
-    st.pyplot(fig)
+    st.write('''Tabela de dados:''', unsafe_allow_html=True)
     st.table(dados)
+
+    chart = alt.Chart(dados).mark_bar().encode(
+        x='NOME_ORGAO_SUPERIOR',
+        y='valor_convenio',
+        tooltip=['NOME_ORGAO_SUPERIOR', 'valor_convenio']
+    ).interactive()
+
+    st.write('''Gráfico da quantidade de convênios por órgão superior''', unsafe_allow_html=True)
+    st.altair_chart(chart, use_container_width=True)
 
 builder_body()
