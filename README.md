@@ -18,18 +18,20 @@ O projeto se concentra na construção de um Data wharehouse a partir dos dados 
   </li>
 
   <li>Instale as libs necessárias para o projeto:<br>
+    <code>pip install -r requirements.txt --upgrade</code>
+  </li>
+
+  <li>Altere as credenciais de conexão com o banco de dados<br>
     No arquivo main.py, substitua as informações de conexão com o banco de dados por suas informações locais. As informações 
     a serem substiruídas estarão na linha de 18 do arquivo como no exemplo abaixo:
-    <code>conexao = cnt.connect(
+    <code>
+    conexao = cnt.connect(
             host="localhost",
             user="root",
             password="root",
             database="dw_convenios"
-          )</code>
-  </li>
-
-  <li>Altere as credenciais de conexão com o banco de dados<br>
-    <code>pip install -r requirements.txt --upgrade</code>
+          )
+    </code>
   </li>
 
   <li>Rode o sistema:<br>
