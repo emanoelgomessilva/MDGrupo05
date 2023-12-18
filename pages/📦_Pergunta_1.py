@@ -3,13 +3,11 @@ import streamlit as st
 import mysql.connector as cnt
 import matplotlib.pyplot as plt
 import pandas as pd
+import main
 
-conexao = cnt.connect(
-    host="localhost",
-    user="root",
-    password="root",
-    database="dw_convenios"
-)
+conexao = main.conexao
+
+
 
 st.write('<h1>Pergunta 1</h1>', unsafe_allow_html=True)
 st.write('''Qual é o período do ano em que mais são fechados contratos, em termos de trimestres e a média de valores expedidos nesses trimestres?''', unsafe_allow_html=True)

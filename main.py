@@ -1,4 +1,5 @@
 import streamlit as st
+import mysql.connector as cnt
 
 # Ajuste da página geral
 st.set_page_config(
@@ -14,6 +15,13 @@ st.set_page_config(
         } # type: ignore
 )
 
+conexao = cnt.connect(
+    host="localhost",
+    user="root",
+    password="root",
+    database="dw_convenios"
+)
+
 # Criação de um cabeçalho
 st.markdown('''
 # **Modelagem de dados: Convênios**
@@ -27,7 +35,6 @@ O projeto se concentra na construção de um Data wharehouse a partir dos dados 
 - `Emanoel` (emanoel20092009@gmail.com)
 - `Guilherme`
 - `Júlia`
-- `Pedro`
             
 **Fonte**:
 - [Convênios](https://portaldatransparencia.gov.br/download-de-dados/convenios)

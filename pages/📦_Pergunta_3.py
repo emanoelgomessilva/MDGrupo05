@@ -3,13 +3,9 @@ import streamlit as st
 import mysql.connector as cnt
 import matplotlib.pyplot as plt
 import pandas as pd
+import main
 
-conexao = cnt.connect(
-    host="localhost",
-    user="root",
-    password="root",
-    database="dw_convenios"
-)
+conexao = main.conexao
 
 st.write('<h1>Pergunta 3</h1>', unsafe_allow_html=True)
 st.write('''Qual órgão superior teve maior uso das verbas nos últimos 10 anos?''', unsafe_allow_html=True)

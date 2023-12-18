@@ -3,13 +3,9 @@ import streamlit as st
 import mysql.connector as cnt
 import matplotlib.pyplot as plt
 import pandas as pd
+import main
 
-conexao = cnt.connect(
-    host="localhost",
-    user="root",
-    password="root",
-    database="dw_convenios"
-)
+conexao = main.conexao
 
 st.write('<h1>Pergunta 4</h1>', unsafe_allow_html=True)
 st.write('''Considerando os anos de maior impacto da covid-19, 2020-2021-2022, o que houve com a média de gastos, comparando com os a média dos 3 anos anteriores, 2017-2018-2019?''', unsafe_allow_html=True)
