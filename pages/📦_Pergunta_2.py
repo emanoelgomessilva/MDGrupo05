@@ -52,8 +52,8 @@ def Pergunta_2():
     dados_2 = pd.read_sql_query(consulta_sql_2, conexao)
 
     chart = alt.Chart(dados).mark_bar().encode(
-        x='NOME_ORGAO_CONCEDENTE',
-        y='quantidade_convenios',
+        x= alt.X('NOME_ORGAO_CONCEDENTE', title='Nome do órgão concedente'),
+        y=alt.Y('quantidade_convenios', title='Quantidade de convênios'),
         tooltip=['NOME_ORGAO_CONCEDENTE', 'quantidade_convenios']
     ).interactive()
 
@@ -61,8 +61,8 @@ def Pergunta_2():
     st.altair_chart(chart, use_container_width=True)
 
     chart_2 = alt.Chart(dados_2).mark_bar().encode(
-        x='NOME_ORGAO_CONCEDENTE',
-        y='valor_convenio',
+        x= alt.X('NOME_ORGAO_CONCEDENTE', title='Nome do órgão concedente'),
+        y=alt.Y('valor_convenio', title='Valores em convênio'),
         tooltip=['NOME_ORGAO_CONCEDENTE', 'valor_convenio']
     ).interactive()
 

@@ -27,8 +27,8 @@ def Pergunta_1():
     st.table(dados)
 
     chart = alt.Chart(dados).mark_bar().encode(
-        x='trimestre_nome',
-        y='quantidade',
+        x= alt.X('trimestre_nome', title='Trimestre'),
+        y=alt.Y('quantidade', title='Quantidade de convênios'),
         tooltip=['trimestre_nome', 'quantidade']
     ).interactive()
 
@@ -39,8 +39,8 @@ def Pergunta_1():
     st.table(dados_2)
 
     chart_2 = alt.Chart(dados_2).mark_bar().encode(
-        x='trimestre_nome',
-        y='media_valores',
+        x= alt.X('trimestre_nome', title='Trimestre'),
+        y=alt.Y('media_valores', title='Média de valores de convênios'),
         tooltip=['trimestre_nome', 'media_valores']
     ).interactive()
 

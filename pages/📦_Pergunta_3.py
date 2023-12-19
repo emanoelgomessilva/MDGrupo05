@@ -20,8 +20,8 @@ def Pergunta_3():
     st.table(dados)
 
     chart = alt.Chart(dados).mark_bar().encode(
-        x='NOME_ORGAO_SUPERIOR',
-        y='valor_convenio',
+        x= alt.X('NOME_ORGAO_SUPERIOR', title='Nome do órgão superior'),
+        y=alt.Y('valor_convenio', title='Valores em convênio'),
         tooltip=['NOME_ORGAO_SUPERIOR', 'valor_convenio']
     ).interactive()
 
