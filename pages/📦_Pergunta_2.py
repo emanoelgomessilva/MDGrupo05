@@ -45,10 +45,10 @@ def Pergunta_2():
                             'TO',
                         ])
 
-    consulta_sql = "SELECT doc.NOME_ORGAO_CONCEDENTE, COUNT(*) as quantidade_convenios FROM dim_orgao_concedente as doc inner join fatoconvenios as fc inner join dim_municipio as dm where doc.sk_orgao_concedente = fc.k_Orgao_Concedente and dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"+ "GROUP BY doc.NOME_ORGAO_CONCEDENTE ORDER BY quantidade_convenios DESC LIMIT 5"
+    consulta_sql = "SELECT doc.NOME_ORGAO_CONCEDENTE, COUNT(*) as quantidade_convenios FROM dim_orgao_concedente as doc inner join fatoconvenios as fc inner join dim_municipio as dm where doc.sk_orgao_concedente = fc.k_Orgao_Concedente and dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"+ "GROUP BY doc.NOME_ORGAO_CONCEDENTE ORDER BY quantidade_convenios DESC"
     dados = pd.read_sql_query(consulta_sql, conexao)
 
-    consulta_sql_2 = "SELECT doc.NOME_ORGAO_CONCEDENTE, SUM(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_concedente as doc inner join fatoconvenios as fc inner join dim_municipio as dm where doc.sk_orgao_concedente = fc.k_Orgao_Concedente and dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"+ "GROUP BY doc.NOME_ORGAO_CONCEDENTE ORDER BY valor_convenio DESC LIMIT 5"
+    consulta_sql_2 = "SELECT doc.NOME_ORGAO_CONCEDENTE, SUM(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_concedente as doc inner join fatoconvenios as fc inner join dim_municipio as dm where doc.sk_orgao_concedente = fc.k_Orgao_Concedente and dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"+ "GROUP BY doc.NOME_ORGAO_CONCEDENTE ORDER BY valor_convenio DESC"
     dados_2 = pd.read_sql_query(consulta_sql_2, conexao)
 
     chart = alt.Chart(dados).mark_bar().encode(

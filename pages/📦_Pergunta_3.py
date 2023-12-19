@@ -13,7 +13,7 @@ def builder_body():
 
 def Pergunta_3():
 
-    consulta_sql = "SELECT dos.NOME_ORGAO_SUPERIOR, SUM(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_superior as dos inner join fatoconvenios as fc inner join dimdata as dt where dos.sk_orgao_superior = fc.k_Orgao_Superior and dt.keyData = fc.k_Data and dt.ano_id > 2013 GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC LIMIT 5"
+    consulta_sql = "SELECT dos.NOME_ORGAO_SUPERIOR, SUM(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_superior as dos inner join fatoconvenios as fc inner join dimdata as dt where dos.sk_orgao_superior = fc.k_Orgao_Superior and dt.keyData = fc.k_Data and dt.ano_id > 2013 GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC"
     dados = pd.read_sql_query(consulta_sql, conexao)
 
     st.write('''Tabela de dados:''', unsafe_allow_html=True)
