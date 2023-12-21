@@ -44,8 +44,17 @@ def Pergunta_2():
                             'SE',
                             'TO',
                         ])
+    
+    filtro_2 = st.sidebar.slider('Selecione o ano', min_value = 2008, max_value = 2023)
 
-    consulta_sql = "SELECT doc.NOME_ORGAO_CONCEDENTE, COUNT(*) as quantidade_convenios FROM dim_orgao_concedente as doc inner join fatoconvenios as fc inner join dim_municipio as dm where doc.sk_orgao_concedente = fc.k_Orgao_Concedente and dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"+ "GROUP BY doc.NOME_ORGAO_CONCEDENTE ORDER BY quantidade_convenios DESC"
+
+
+    consulta_sql = "SELECT doc.NOME_ORGAO_CONCEDENTE, COUNT(*) as quantidade_convenios FROM dim_orgao_concedente as doc inner join fatoconvenios as fc on doc.sk_orgao_concedente = fc.k_Orgao_Concedente inner join dim_municipio as dm on dm.sk_municipio = fc.k_Municipio inner join dimdata as dt on dt.keyData = fc.k_Data and dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"
+
+    consulta_sql += " and dt.ano_nome ="+"'"+str(filtro_2)+"'"
+
+    consulta_sql+= " GROUP BY doc.NOME_ORGAO_CONCEDENTE ORDER BY quantidade_convenios DESC"
+
     dados = pd.read_sql_query(consulta_sql, conexao)
 
     consulta_sql_2 = "SELECT doc.NOME_ORGAO_CONCEDENTE, SUM(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_concedente as doc inner join fatoconvenios as fc inner join dim_municipio as dm where doc.sk_orgao_concedente = fc.k_Orgao_Concedente and dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"+ "GROUP BY doc.NOME_ORGAO_CONCEDENTE ORDER BY valor_convenio DESC"
