@@ -9,14 +9,51 @@ st.write('<h1>Pergunta 4</h1>', unsafe_allow_html=True)
 st.write('''Considerando os anos de maior impacto da covid-19, 2020-2021-2022, o que houve com a média de gastos, comparando com os a média dos 3 anos anteriores, 2017-2018-2019?''', unsafe_allow_html=True)
 
 def builder_body():
-    Pergunta_3()
+    Pergunta_4()
 
-def Pergunta_3():
+def Pergunta_4():
 
-    consulta_sql = "SELECT dos.NOME_ORGAO_SUPERIOR, AVG(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_superior as dos inner join fatoconvenios as fc inner join dimdata as dt where dos.sk_orgao_superior = fc.k_Orgao_Superior and dt.keyData = fc.k_Data and dt.ano_id >= 2019 and dt.ano_id <= 2022 GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC"
+    st.sidebar.header('Configurações do Gráfico')
+    filtro_1 = st.sidebar.selectbox('Selecione um estado', [
+                            'AC',
+                            'AL',
+                            'AP',
+                            'AM',
+                            'BA',
+                            'CE',
+                            'DF',
+                            'ES',
+                            'GO',
+                            'MA',
+                            'MS',
+                            'MT',
+                            'MG',
+                            'PA',
+                            'PB',
+                            'PR',
+                            'PE',
+                            'PI',
+                            'RJ',
+                            'RN',
+                            'RS',
+                            'RO',
+                            'RR',
+                            'SC',
+                            'SP',
+                            'SE',
+                            'TO',
+                        ])
+
+    consulta_sql = "SELECT dos.NOME_ORGAO_SUPERIOR, AVG(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_superior as dos inner join fatoconvenios as fc inner join dimdata as dt on dos.sk_orgao_superior = fc.k_Orgao_Superior and dt.keyData = fc.k_Data and dt.ano_id >= 2019 and dt.ano_id <= 2022 inner join dim_municipio as dm on dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"
+
+    consulta_sql+= " GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC"
+    
     dados = pd.read_sql_query(consulta_sql, conexao)
 
-    consulta_sql_2 = "SELECT dos.NOME_ORGAO_SUPERIOR, AVG(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_superior as dos inner join fatoconvenios as fc inner join dimdata as dt where dos.sk_orgao_superior = fc.k_Orgao_Superior and dt.keyData = fc.k_Data and dt.ano_id >= 2017 and dt.ano_id <= 2019 GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC"
+    consulta_sql_2 = "SELECT dos.NOME_ORGAO_SUPERIOR, AVG(VALOR_CONVENIO) as valor_convenio FROM dim_orgao_superior as dos inner join fatoconvenios as fc inner join dimdata as dt on dos.sk_orgao_superior = fc.k_Orgao_Superior and dt.keyData = fc.k_Data and dt.ano_id >= 2017 and dt.ano_id <= 2019 inner join dim_municipio as dm on dm.sk_municipio = fc.k_Municipio and dm.UF ="+"'"+str(filtro_1)+"'"
+
+    consulta_sql_2+= " GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC"
+
     dados_2 = pd.read_sql_query(consulta_sql_2, conexao)
 
     st.write('''Tabela de dados:''', unsafe_allow_html=True)
