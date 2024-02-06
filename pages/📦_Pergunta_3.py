@@ -50,7 +50,7 @@ def Pergunta_3():
 
     consulta_sql += " and dt.ano_nome ="+"'"+str(filtro_2)+"'"
 
-    consulta_sql+= " GROUP BY doS.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC"
+    consulta_sql+= " GROUP BY dos.NOME_ORGAO_SUPERIOR ORDER BY valor_convenio DESC"
     dados = pd.read_sql_query(consulta_sql, conexao)
 
     st.write('''Tabela de dados:''', unsafe_allow_html=True)
