@@ -16,9 +16,9 @@ st.set_page_config(
 )
 
 conexao = cnt.connect(
-    host="localhost",
+    host="34.74.123.192",
     user="root",
-    password="root",
+    password="Ufrpe!24",
     database="dw_convenios"
 )
 
