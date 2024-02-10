@@ -15,9 +15,46 @@ def builder_body():
 def Pergunta_1():
 
     st.sidebar.header('Configurações do Gráfico')
-    filtro_1 = st.sidebar.slider('Selecione o ano', min_value = 2008, max_value = 2023)
 
-    filtro_2 = st.sidebar.selectbox('Selecione um estado', [
+    filtro_1 = st.sidebar.selectbox('De:', [
+                            '2008',
+                            '2009',
+                            '2010',
+                            '2011',
+                            '2012',
+                            '2013',
+                            '2014',
+                            '2015',
+                            '2016',
+                            '2017',
+                            '2018',
+                            '2019',
+                            '2020',
+                            '2021',
+                            '2022',
+                            '2023',
+                        ])
+    
+    filtro_2 = st.sidebar.selectbox('Até:', [
+                            '2008',
+                            '2009',
+                            '2010',
+                            '2011',
+                            '2012',
+                            '2013',
+                            '2014',
+                            '2015',
+                            '2016',
+                            '2017',
+                            '2018',
+                            '2019',
+                            '2020',
+                            '2021',
+                            '2022',
+                            '2023',
+                        ])
+
+    filtro_3 = st.sidebar.selectbox('Selecione um estado', [
                             'AC',
                             'AL',
                             'AP',
@@ -50,36 +87,47 @@ def Pergunta_1():
     consulta_filtro_orgao_superior = "select NOME_ORGAO_SUPERIOR from dw_convenios.dim_orgao_superior limit 0, 1000"
     lista_orgao_superior = pd.read_sql_query(consulta_filtro_orgao_superior, conexao)
     
-    filtro_3 = st.sidebar.selectbox('Selecione um órgão superior', lista_orgao_superior)
+    filtro_4 = st.sidebar.selectbox('Selecione um órgão superior', lista_orgao_superior)
 
     consulta_filtro_orgao_concedente = "select NOME_ORGAO_CONCEDENTE from dw_convenios.dim_orgao_concedente limit 0, 1000"
     lista_orgao_concedente = pd.read_sql_query(consulta_filtro_orgao_concedente, conexao)
     
-    filtro_4 = st.sidebar.selectbox('Selecione um órgão concedente', lista_orgao_concedente)
+    filtro_5 = st.sidebar.selectbox('Selecione um órgão concedente', lista_orgao_concedente)
 
-    consulta_sql = "SELECT trimestre_nome, COUNT(*) as quantidade FROM dimdata inner join fatoconvenios as fc on keyData = k_Data INNER JOIN dim_municipio as dm on k_Municipio = sk_municipio INNER JOIN dim_orgao_superior as os on k_Orgao_Superior = sk_orgao_superior INNER JOIN dim_orgao_concedente as oc on k_Orgao_Concedente = sk_orgao_concedente and ano_nome = "+"'"+str(filtro_1)+"'"
+    consulta_filtro_ug_concedente = "select NOME_UG_CONCEDENTE from dw_convenios.dim_ug_concedente limit 0, 1000"
+    lista_ug_concedente = pd.read_sql_query(consulta_filtro_ug_concedente, conexao)
     
-    consulta_sql += " and UF ="+"'"+filtro_2+"'"
+    filtro_6 = st.sidebar.selectbox('Selecione uma UG concedente', lista_ug_concedente)
 
-    if filtro_3 != None:
-        consulta_sql += " and NOME_ORGAO_SUPERIOR ="+"'"+filtro_3+"'"
+    consulta_sql = "SELECT trimestre_nome, COUNT(*) as quantidade FROM dimdata inner join fatoconvenios as fc on keyData = k_Data INNER JOIN dim_municipio as dm on k_Municipio = sk_municipio INNER JOIN dim_orgao_superior as os on k_Orgao_Superior = sk_orgao_superior INNER JOIN dim_ug_concedente as ugc on k_UG_Concedente = sk_ug_concedente INNER JOIN dim_orgao_concedente as oc on k_Orgao_Concedente = sk_orgao_concedente and ano_id >= "+str(filtro_1)+" and ano_id <= "+str(filtro_2)
+    
+    consulta_sql += " and UF ="+"'"+str(filtro_3)+"'"
 
     if filtro_4 != None:
-       consulta_sql += " and NOME_ORGAO_CONCEDENTE ="+"'"+filtro_4+"'"
+        consulta_sql += " and NOME_ORGAO_SUPERIOR ="+"'"+str(filtro_4)+"'"
+
+    if filtro_5 != None:
+       consulta_sql += " and NOME_ORGAO_CONCEDENTE ="+"'"+str(filtro_5)+"'"   
+    
+    if filtro_6 != None:
+       consulta_sql += " and NOME_UG_CONCEDENTE ="+"'"+str(filtro_6)+"'"
 
     consulta_sql += " GROUP BY trimestre_nome"
 
     dados = pd.read_sql_query(consulta_sql, conexao)
 
-    consulta_sql_2 = "SELECT dt.trimestre_nome, AVG(fc.VALOR_CONVENIO) as media_valores FROM dimdata as dt inner join fatoconvenios as fc on dt.keyData = fc.k_Data INNER JOIN dim_municipio as dm on fc.k_Municipio = dm.sk_municipio INNER JOIN dim_orgao_superior as os on fc.k_Orgao_Superior = os.sk_orgao_superior INNER JOIN dim_orgao_concedente as oc on fc.k_Orgao_Concedente = oc.sk_orgao_concedente and dt.ano_nome = "+"'"+str(filtro_1)+"'"
+    consulta_sql_2 = "SELECT dt.trimestre_nome, AVG(fc.VALOR_CONVENIO) as media_valores FROM dimdata as dt inner join fatoconvenios as fc on dt.keyData = fc.k_Data INNER JOIN dim_municipio as dm on fc.k_Municipio = dm.sk_municipio INNER JOIN dim_ug_concedente as ugc on fc.k_UG_Concedente = ugc.sk_ug_concedente INNER JOIN dim_orgao_superior as os on fc.k_Orgao_Superior = os.sk_orgao_superior INNER JOIN dim_orgao_concedente as oc on fc.k_Orgao_Concedente = oc.sk_orgao_concedente and dt.ano_id >= "+str(filtro_1)+" and dt.ano_id <= "+str(filtro_2)
     
-    consulta_sql_2 += " and dm.UF ="+"'"+filtro_2+"'"
-
-    if filtro_3 != None:
-        consulta_sql_2 += " and os.NOME_ORGAO_SUPERIOR ="+"'"+filtro_3+"'"
+    consulta_sql_2 += " and dm.UF ="+"'"+filtro_3+"'"
 
     if filtro_4 != None:
-        consulta_sql_2 += " and oc.NOME_ORGAO_CONCEDENTE ="+"'"+filtro_4+"'"
+        consulta_sql_2 += " and os.NOME_ORGAO_SUPERIOR ="+"'"+filtro_4+"'"
+
+    if filtro_5 != None:
+        consulta_sql_2 += " and oc.NOME_ORGAO_CONCEDENTE ="+"'"+filtro_5+"'"
+
+    if filtro_6 != None:
+       consulta_sql_2 += " and ugc.NOME_UG_CONCEDENTE ="+"'"+filtro_6+"'"
 
     consulta_sql_2 += " GROUP BY trimestre_nome"
 
